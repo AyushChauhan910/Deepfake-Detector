@@ -2,6 +2,8 @@ import os
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 import shutil
+import logging
+logger = logging.getLogger("deepfake_api")
 
 from .inference import DeepfakeInferencePipeline
 
@@ -38,7 +40,8 @@ def infer_video_endpoint(file: UploadFile = File(...)):
         result = pipeline.infer_single(file_path, model_type="video")
         return JSONResponse(content=result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception(f"Video inference failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Video inference error: {str(e)}")
     finally:
         os.remove(file_path)
 
@@ -49,7 +52,8 @@ def infer_audio_endpoint(file: UploadFile = File(...)):
         result = pipeline.infer_single(file_path, model_type="audio")
         return JSONResponse(content=result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.exception(f"Audio inference failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Audio inference error: {str(e)}")
     finally:
         os.remove(file_path)
 
