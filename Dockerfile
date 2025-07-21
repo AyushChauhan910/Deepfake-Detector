@@ -17,7 +17,7 @@ COPY models/*.pth /app/models/
 # Install Python dependencies
 RUN pip install --upgrade pip && \
     pip install .[all] && \
-    pip install fastapi uvicorn
+    pip install fastapi uvicorn python-multipart
 
 # Expose FastAPI port
 EXPOSE 8000
