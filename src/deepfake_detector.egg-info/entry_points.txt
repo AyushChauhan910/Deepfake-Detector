@@ -1,0 +1,2 @@
+[console_scripts]
+deepfake-infer = deepfake_detector.inference:main
