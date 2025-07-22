@@ -1,5 +1,5 @@
-torch==2.0.1
-torchvision==0.15.2
+torch
+torchvision
 librosa==0.10.1
 opencv-python==4.8.1.78
 Pillow==10.0.1
