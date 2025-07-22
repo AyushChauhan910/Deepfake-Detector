@@ -11,3 +11,4 @@ seaborn==0.12.2
 fastapi
 uvicorn
 python-multipart
+streamlit
