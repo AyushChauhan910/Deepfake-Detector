@@ -1,156 +1,262 @@
-# Deepfake Detector
+<div align="center">
 
-A powerful, multimodal deepfake detection toolkit supporting **image, video, and audio analysis**. This project provides a robust backend (Flask API), a modern React frontend, and is deployable on Hugging Face Spaces and Vercel for easy public access and demonstration.
+# 🕵️ Deepfake Detector
+
+### Multimodal AI-Powered Deepfake Detection for Images, Videos & Audio
+
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+*Detect AI-generated faces, synthetic voices, and manipulated videos — all in one toolkit*
+
+<br/>
+
+**[🤗 Live Demo on Hugging Face](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)** &nbsp;·&nbsp;
+**[🌐 React Frontend on Vercel](https://deepfakedetector-rouge.vercel.app/)**
+
+</div>
 
 ---
 
-## 🚀 Live Demos
+## 🌐 Overview
 
-- **Hugging Face Spaces:**  
-  [Deepfake Detector on Hugging Face Spaces](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)
-- **Vercel Frontend:**  
-  [Deepfake Detector React Frontend](https://deepfakedetector-rouge.vercel.app/)
+Deepfakes pose a growing threat to digital trust — from fabricated political speeches to synthetic media fraud. This project delivers a **production-ready deepfake detection toolkit** capable of analyzing images, video frames, and audio clips using deep learning models trained on real-world datasets.
 
----
-
-## 📚 Related Notebooks & Resources
-
-- [Raw Data Processing (Kaggle)](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-raw-data-processing)
-- [Model Training (Kaggle)](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-model-training-3)
-- [Inference Pipelines (Kaggle)](https://www.kaggle.com/code/ayushchauhan0910/inference-pipelines-for-deepfake-detection)
+With a clean **Streamlit interface**, a **REST API backend**, and **one-command Docker deployment**, it's designed for both researchers and developers who need reliable deepfake detection at their fingertips.
 
 ---
 
 ## ✨ Features
 
-- **Multimodal Detection:**  
-  Detects deepfakes in images, videos, and audio files using state-of-the-art models.
-- **Pre-trained Models:**  
-  EfficientNet-based architectures for images, CNN+LSTM for videos, and custom CNNs for audio.
-- **User-Friendly Web UI:**  
-  Upload files and view results instantly via a modern React interface.
-- **REST API:**  
-  Flask backend exposes `/api/infer` for programmatic access.
-- **Easy Deployment:**  
-  Ready for Hugging Face Spaces (Docker SDK) and Vercel.
+| Feature | Description |
+|---|---|
+| 🖼️ **Image Detection** | EfficientNet-based classifier detects facial manipulations in still images |
+| 🎬 **Video Detection** | CNN+LSTM pipeline analyzes temporal frame sequences for video deepfakes |
+| 🎙️ **Audio Detection** | Custom CNN on mel-spectrograms identifies AI-synthesized speech and voice cloning |
+| 🔀 **Auto Modality Routing** | Automatically detects file type and routes to the correct model |
+| 📊 **Confidence Scores** | Returns prediction label + probability breakdown as structured JSON |
+| 🌐 **REST API** | FastAPI `/api/infer` endpoint for programmatic access |
+| 🐳 **Docker Ready** | Multi-stage build, deployable to Hugging Face Spaces in minutes |
+| ⚡ **Streamlit UI** | Drag-and-drop web interface — no coding needed to try it out |
 
 ---
 
-## 🖥️ Project Structure
+## 🎯 Supported File Types
+
+| Modality | Formats |
+|---|---|
+| 🖼️ Image | `.jpg`, `.jpeg`, `.png`, `.bmp`, `.tiff` |
+| 🎬 Video | `.mp4`, `.avi`, `.mov`, `.mkv`, `.webm` |
+| 🎙️ Audio | `.wav`, `.mp3`, `.flac`, `.m4a`, `.ogg` |
+
+---
+
+## 🗂️ Project Structure
 
 ```
-deepfake-detector-space/
+Deepfake-Detector/
 │
-├── backend/
-│   ├── app.py                # Flask API and static file server
-│   ├── requirements.txt      # Python dependencies
-│   ├── src/                  # Deepfake detector core code
-│   └── models/               # Pre-trained model weights (.pth)
+├── 🐍 Core Application
+│   ├── app.py                                        ← Streamlit UI entry point
+│   ├── predict.py                                    ← CLI prediction script
+│   └── inference-pipelines-for-deepfake-detection.ipynb
 │
-├── frontend/
-│   ├── package.json
-│   ├── public/
-│   │   └── index.html
-│   └── src/
-│       └── App.js            # React UI
+├── 📦 src/
+│   └── deepfake_detector/
+│       └── inference.py                              ← DeepfakeInferencePipeline class
 │
-├── Dockerfile                # Multi-stage build for Spaces
-└── README.md
+├── 🧠 models/                                        ← Pre-trained model weights (.pth)
+│   ├── image_model.pth
+│   ├── video_model.pth
+│   └── audio_model.pth
+│
+├── 📓 Notebooks
+│   ├── deepfake-detection-raw-data-processing.ipynb  ← Data prep pipeline
+│   └── deepfake-detection-model-training-3 (2).ipynb ← Model training
+│
+├── 🧪 tests/                                         ← Unit & integration tests
+├── 📦 dist/                                          ← Build artifacts
+│
+├── Dockerfile                                        ← Multi-stage Docker build
+├── requirements.txt
+├── pyproject.toml
+└── setup.cfg
 ```
 
 ---
 
-## 🛠️ Installation & Local Development
+## 🧠 Model Architecture
 
-### 1. **Clone the Repository**
+```
+Input File
+    │
+    ▼
+Modality Detection (by file extension)
+    │
+    ├─── 🖼️  Image ──► EfficientNet-B4
+    │                    └─► Binary classifier (Real / Fake)
+    │
+    ├─── 🎬  Video ──► Frame Sampler → CNN feature extractor
+    │                    └─► LSTM temporal aggregator → prediction
+    │
+    └─── 🎙️  Audio ──► Mel-spectrogram → Custom CNN
+                         └─► Softmax output (Real / Fake)
+```
+
+All three pipelines return a unified JSON response:
+
+```json
+{
+  "prediction": "FAKE",
+  "confidence": 0.94,
+  "probabilities": {
+    "real": 0.06,
+    "fake": 0.94
+  },
+  "modality": "image"
+}
+```
+
+---
+
+## 🚀 Quick Start
+
+### Option 1 — Docker (Recommended)
+
 ```bash
-git clone https://github.com/yourusername/deepfake-detector-space.git
-cd deepfake-detector-space
+git clone https://github.com/AyushChauhan910/Deepfake-Detector.git
+cd Deepfake-Detector
+
+docker build -t deepfake-detector .
+docker run -p 7860:7860 deepfake-detector
 ```
 
-### 2. **Build the React Frontend**
+Visit **http://localhost:7860** — the Streamlit UI will be live.
+
+---
+
+### Option 2 — Local Python
+
+**1. Clone & install dependencies**
+
 ```bash
-cd frontend
-npm install
-npm run build
-cd ..
+git clone https://github.com/AyushChauhan910/Deepfake-Detector.git
+cd Deepfake-Detector
+pip install -r requirements.txt
 ```
 
-### 3. **Run with Docker**
+**2. Launch the Streamlit app**
+
 ```bash
-docker build -t deepfake-detector-space .
-docker run -p 7860:7860 deepfake-detector-space
+streamlit run app.py
 ```
-Visit [http://localhost:7860](http://localhost:7860) in your browser.
 
----
+**3. Or run a quick CLI prediction**
 
-## 🌐 Deployment
-
-### **Hugging Face Spaces (Docker SDK)**
-- Push your code to a public GitHub repo.
-- Create a new Space, select **Docker** as the SDK, and link your repo.
-- [View the live Space](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)
-
-### **Vercel (Frontend Only)**
-- Deploy the `frontend/` directory to Vercel for a fast, static UI.
-- [View the Vercel frontend](https://deepfakedetector-rouge.vercel.app/)
-
----
-
-## 🧑‍💻 API Usage
-
-### **POST** `/api/infer`
-
-- **Request:**  
-  `multipart/form-data` with a file field named `file`
-- **Response:**  
-  JSON with prediction, confidence, and probabilities.
-
-**Example using `curl`:**
 ```bash
-curl -X POST -F "file=@yourfile.mp4" https://huggingface.co/spaces/ayush0910/Deepfake_Detector/api/infer
+python predict.py --file path/to/your/image.jpg
 ```
 
 ---
 
-## 📊 Model Training & Inference
+## 🌐 REST API
 
-- **Raw Data Processing:**  
-  [Kaggle Notebook](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-raw-data-processing)
-- **Model Training:**  
-  [Kaggle Notebook](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-model-training-3)
-- **Inference Pipelines:**  
-  [Kaggle Notebook](https://www.kaggle.com/code/ayushchauhan0910/inference-pipelines-for-deepfake-detection)
+The FastAPI backend exposes a single inference endpoint.
+
+### `POST /api/infer`
+
+**Request:** `multipart/form-data` with a field named `file`
+
+**Example with `curl`:**
+
+```bash
+curl -X POST \
+  -F "file=@sample_video.mp4" \
+  https://huggingface.co/spaces/ayush0910/Deepfake_Detector/api/infer
+```
+
+**Response:**
+
+```json
+{
+  "prediction": "FAKE",
+  "confidence": 0.91,
+  "probabilities": { "real": 0.09, "fake": 0.91 },
+  "modality": "video"
+}
+```
 
 ---
 
-## 📝 Citation
+## 📓 Training & Notebooks
 
-If you use this project, please cite the relevant Kaggle notebooks and this repository.
+The full ML pipeline is documented across three Kaggle notebooks:
+
+| Notebook | Description | Link |
+|---|---|---|
+| 🔧 Raw Data Processing | Dataset curation, face extraction, augmentation | [Kaggle →](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-raw-data-processing) |
+| 🏋️ Model Training | EfficientNet, CNN+LSTM, audio CNN training | [Kaggle →](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-model-training-3) |
+| 🔍 Inference Pipelines | End-to-end inference across all three modalities | [Kaggle →](https://www.kaggle.com/code/ayushchauhan0910/inference-pipelines-for-deepfake-detection) |
+
+---
+
+## ☁️ Deployment
+
+### Hugging Face Spaces (Docker SDK)
+
+1. Fork this repository
+2. Create a new Space → select **Docker** as the SDK
+3. Connect your GitHub repo
+4. The Space will auto-build and deploy
+
+🔗 [View the live Space](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)
+
+### Vercel (Frontend Only)
+
+The React frontend is independently deployable to Vercel for a fast, CDN-hosted UI.
+
+🔗 [View the Vercel frontend](https://deepfakedetector-rouge.vercel.app/)
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Deep Learning | PyTorch 2.0, TorchVision |
+| Image Models | EfficientNet-B4 |
+| Video Models | CNN + LSTM |
+| Audio Processing | Librosa, Mel-spectrogram CNN |
+| Computer Vision | OpenCV |
+| Web App | Streamlit |
+| API Backend | FastAPI + Uvicorn |
+| Containerization | Docker |
+| Hosting | Hugging Face Spaces, Vercel |
 
 ---
 
 ## 📄 License
 
-MIT License
+This project is licensed under the [MIT License](LICENSE).
 
 ---
 
 ## 🙏 Acknowledgements
 
-- [Hugging Face Spaces](https://huggingface.co/spaces)
-- [Vercel](https://vercel.com/)
-- [Kaggle](https://www.kaggle.com/)
+- [Hugging Face Spaces](https://huggingface.co/spaces) for free GPU-accelerated hosting
+- [Kaggle](https://www.kaggle.com/) for compute and dataset access
+- [EfficientNet](https://arxiv.org/abs/1905.11946) — Tan & Le, 2019
+- [Librosa](https://librosa.org/) for audio feature extraction
 
 ---
 
-## 🔗 Useful Links
+<div align="center">
 
-- **Live Space:** [https://huggingface.co/spaces/ayush0910/Deepfake_Detector](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)
-- **Vercel Frontend:** [https://deepfakedetector-rouge.vercel.app/](https://deepfakedetector-rouge.vercel.app/)
-- **Kaggle Raw Data Processing:** [https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-raw-data-processing](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-raw-data-processing)
-- **Kaggle Model Training:** [https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-model-training-3](https://www.kaggle.com/code/ayushchauhan0910/deepfake-detection-model-training-3)
-- **Kaggle Inference Pipelines:** [https://www.kaggle.com/code/ayushchauhan0910/inference-pipelines-for-deepfake-detection](https://www.kaggle.com/code/ayushchauhan0910/inference-pipelines-for-deepfake-detection)
+*Built to make the internet a more trustworthy place — one file at a time.*
 
----
+**[⭐ Star this repo](https://github.com/AyushChauhan910/Deepfake-Detector)** &nbsp;·&nbsp; **[🤗 Try the Demo](https://huggingface.co/spaces/ayush0910/Deepfake_Detector)**
+
+</div>
